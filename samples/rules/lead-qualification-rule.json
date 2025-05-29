@@ -1,0 +1,50 @@
+{
+    "id": "00000000-0000-0000-0000-000000000001",
+    "name": "High-Value Lead Qualification",
+    "description": "Automatically qualifies leads with high revenue potential",
+    "entityName": "lead",
+    "isActive": true,
+    "environment": "PROD",
+    "version": 1,
+    "rootCondition": {
+        "operator": "AND",
+        "subConditions": [
+            {
+                "operator": "GREATER_THAN",
+                "fieldName": "revenue",
+                "fieldType": "decimal",
+                "value": 50000
+            },
+            {
+                "operator": "EQUALS",
+                "fieldName": "status",
+                "fieldType": "string",
+                "value": "New"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "actionType": "UPDATE_FIELD",
+            "targetEntity": "lead",
+            "targetField": "status",
+            "value": "Qualified",
+            "parameters": {
+                "triggerWorkflow": true
+            }
+        },
+        {
+            "actionType": "SEND_EMAIL",
+            "targetEntity": "lead",
+            "parameters": {
+                "templateName": "LeadQualified",
+                "recipients": ["owner", "salesmanager"]
+            }
+        }
+    ],
+    "metadata": {
+        "category": "Lead Management",
+        "priority": "High",
+        "tags": ["qualification", "automation"]
+    }
+} 
